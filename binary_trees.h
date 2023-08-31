@@ -82,6 +82,10 @@ levelorder_queue_t *create_node(binary_tree_t *node);
 void enqueue(levelorder_queue_t **queue, binary_tree_t *node);
 void dequeue(levelorder_queue_t **queue);
 void free_queue(levelorder_queue_t *queue);
+int is_complete(const binary_tree_t *tree, int index, int node_count);
+int count_nodes(const binary_tree_t *tree);
+
+
 
 #endif /* _BINARY_TREES_H_ */
 
