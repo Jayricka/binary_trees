@@ -2,47 +2,71 @@
 #include <stdlib.h>
 
 /**
- * bst_find_min - Finds the minimum value node in a BST
- * @node: The root node of the BST
+ * find_successor - Finds the in-order successor of a node in a BST
+ * @node: A pointer to the node for which to find the successor
  *
- * Return: A pointer to the minimum value node
+ * Return: A pointer to the in-order successor node, or NULL if not found
  */
-bst_t *bst_find_min(bst_t *node)
+bst_t *find_successor(bst_t *node)
 {
-    while (node->left)
-        node = node->left;
-    return (node);
+	if (!node)
+		return (NULL);
+
+	if (node->right)
+	{
+		node = node->right;
+		while (node->left)
+			node = node->left;
+		return (node);
+
+	}
+
+	while (node->parent && node->parent->right == node)
+		node = node->parent;
+
+	return (node->parent);
 }
 
 /**
- * bst_remove - Removes a node from a Binary Search Tree (BST)
+ * bst_remove - Removes a node from a Binary Search Tree
  * @root: Pointer to the root node of the tree
- * @value: The value to remove from the tree
+ * @value: Value to be removed from the tree
  *
- * Return: A pointer to the new root node after removal, or NULL on failure
+ * Return: Pointer to the new root node of the tree after removal
  */
 bst_t *bst_remove(bst_t *root, int value)
 {
-    if (root == NULL)
-        return (NULL);
+	if (!root)
+		return (NULL);
 
-    if (value < root->n)
-        root->left = bst_remove(root->left, value);
-    else if (value > root->n)
-        root->right = bst_remove(root->right, value);
-    else {
-        if (root->left == NULL) {
-            bst_t *temp = root->right;
-            free(root);
-            return (temp);
-        } else if (root->right == NULL) {
-            bst_t *temp = root->left;
-            free(root);
-            return (temp);
-        }
-        bst_t *temp = bst_find_min(root->right);
-        root->n = temp->n;
-        root->right = bst_remove(root->right, temp->n);
-    }
-    return (root);
+	if (value < root->n)
+		root->left = bst_remove(root->left, value);
+	else if (value > root->n)
+		root->right = bst_remove(root->right, value);
+	else
+	{
+		if (!root->left)
+		{
+			bst_t *temp = root->right;
+
+			free(root);
+
+			return (temp);
+		}
+		else if (!root->right)
+		{
+			bst_t *temp = root->left;
+
+			free(root);
+
+			return (temp);
+
+		}
+
+		bst_t *temp = find_successor(root->right);
+
+		root->n = temp->n;
+		root->right = bst_remove(root->right, temp->n);
+	}
+	return (root);
 }

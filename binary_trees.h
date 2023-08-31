@@ -85,6 +85,8 @@ void free_queue(levelorder_queue_t *queue);
 int is_complete(const binary_tree_t *tree, int index, int node_count);
 int count_nodes(const binary_tree_t *tree);
 
+/* Prototype for find_successor function */
+bst_t *find_successor(bst_t *node);
 
 
 #endif /* _BINARY_TREES_H_ */
